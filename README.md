@@ -1,2 +1,2 @@
-# jChain
-Organize your functions like middlewares
+# jMiddleware
+Organize your functions just like Koa or Express
