@@ -2,7 +2,7 @@ type INextCallback<V = any, R = Promise<unknown> | unknown> = (value?: V) => R;
 type IMiddleware<V = any, C = any, R = Promise<unknown> | unknown> = (value: V, next: INextCallback, context: C) => R;
 
 function compose<V, C>(middlewares: IMiddleware[], context: C, isAsync: boolean) {
-  return function (value: V) {
+  return (value: V) => {
     function dispatchAsync(i: number, inputValue = value): Promise<unknown> {
       const fn = middlewares[i];
       if (!fn) return Promise.resolve(inputValue);
@@ -32,7 +32,7 @@ class JMiddleware<V, C> {
     this.context = context;
   }
 
-  use<V>(middleware: IMiddleware<V, C>) {
+  use<P>(middleware: IMiddleware<P, C>) {
     this.middlewares.push(middleware);
     return this;
   }

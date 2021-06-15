@@ -97,7 +97,7 @@ describe('Async', () => {
       const Context: any = {};
       const mGetContext = jest.fn(async (_, next, c) => await next());
       const middleware = new JMiddleware(Context);
-      
+
       middleware
         .use(async (_, next, context) => {
           context.a = 1;
@@ -123,7 +123,7 @@ describe('Async', () => {
 
       expect(mGetContext.mock.calls[1][2]).toBe(Context);
       expect(mGetContext.mock.calls[1][2]).toMatchObject({ a: 1, b: true });
-      
+
       expect(mGetContext.mock.calls[2][2]).toBe(Context);
       expect(mGetContext.mock.calls[2][2]).toMatchObject({ a: 1, b: true, c: {} });
     });
