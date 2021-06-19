@@ -32,7 +32,7 @@ class JMiddleware<V, C> {
     this.context = context;
   }
 
-  use<P>(middleware: IMiddleware<P, C>) {
+  use<P>(middleware: IMiddleware<P, C>): JMiddleware<V, C> {
     this.middlewares.push(middleware);
     return this;
   }
@@ -41,11 +41,11 @@ class JMiddleware<V, C> {
     return compose(this.middlewares, this.context, isAsync)(value);
   }
 
-  startSync(value?: V) {
+  startSync(value?: V): unknown {
     return this.start(value, false) as unknown;
   }
 
-  startAsync(value?: V) {
+  startAsync(value?: V): Promise<unknown> {
     return this.start(value, true) as Promise<unknown>;
   }
 }

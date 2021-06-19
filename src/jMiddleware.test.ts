@@ -94,8 +94,11 @@ describe('Async', () => {
     });
 
     test('Context is immutable among middlewares', () => {
-      const Context: any = {};
-      const mGetContext = jest.fn(async (_, next, c) => await next());
+      const Context: Record<string, any> = {};
+      const mGetContext = jest.fn(async (_, next, ctx) => {
+        console.assert(ctx === Context);
+        await next()
+      });
       const middleware = new JMiddleware(Context);
 
       middleware
@@ -216,7 +219,7 @@ describe('Sync', () => {
   });
 
   describe('Return', () => {
-    test('Error raises', async () => {
+    test('Error raises', () => {
       const middleware = new JMiddleware();
       const error = new Error('test');
       const mError = () => {
@@ -225,28 +228,18 @@ describe('Sync', () => {
       const mNormal = (_: any, next: any) => {
         next();
       };
-      const mCheckFn = jest.fn();
 
-      try {
-        middleware.use(mError).startSync()
-      } catch (err) {
-        mCheckFn();
-        expect(err).toBe(error);
-      }
+      expect(
+        () => middleware.use(mError).startSync()
+      ).toThrow(error);
 
-      try {
-        middleware.use(mNormal).use(mError).startSync()
-      } catch (err) {
-        mCheckFn();
-        expect(err).toBe(error);
-      }
+      expect(
+        () => middleware.use(mNormal).use(mError).startSync()
+      ).toThrow(error);
 
-      try {
-        middleware.use(mNormal).use(mError).use(mNormal).startSync()
-      } catch (err) {
-        mCheckFn();
-        expect(err).toBe(error);
-      }
+      expect(
+        () => middleware.use(mNormal).use(mError).use(mNormal).startSync()
+      ).toThrow(error);
     });
   });
 });
