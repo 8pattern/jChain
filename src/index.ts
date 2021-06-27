@@ -1,1 +1,1 @@
-export * as default from './jMiddleware';
+export { default } from './jMiddleware';

@@ -1,8 +1,9 @@
 {
   "name": "@8pattern/jmiddleware",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Organize your functions just like Koa or Express",
-  "main": "index.js",
+  "main": "dist/jMiddleware.js",
+  "types": "src",
   "scripts": {
     "dev": "rollup -c -w --environment NODE_ENV:development",
     "build": "rollup -c --environment NODE_ENV:production",
